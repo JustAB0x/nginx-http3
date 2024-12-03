@@ -32,7 +32,6 @@ jobs:
       - name: Determine Image Version
         shell: bash
         run: |
-          echo "REPO=${GITHUB_REPOSITORY@L}" >>${GITHUB_ENV}
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # Strip "v" prefix from tag name
@@ -47,12 +46,11 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${REPO}:${{ matrix.library }},ghcr.io/${REPO}:${{ env.VERSION }}
+          tags: ghcr.io/justab0x/nginx-http3:${{ matrix.library }},ghcr.io/justab0x/nginx-http3:${{ env.VERSION }}
       - name: Extract docker build artifacts
         shell: bash
         run: |
-          echo "REPO=${GITHUB_REPOSITORY@L}" >>${GITHUB_ENV}
-          ./scripts/extract-artifacts.sh ghcr.io/${REPO} ${{ env.VERSION }} ${{ matrix.library }}
+          ./scripts/extract-artifacts.sh ghcr.io/justab0x/nginx-http3 ${{ env.VERSION }} ${{ matrix.library }}
       - name: Upload artifacts 
         uses: actions/upload-artifact@v4
         with:
