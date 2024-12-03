@@ -277,9 +277,7 @@ CXX=/usr/bin/clang++ \
 	--add-module=/usr/src/set-misc-nginx-module \
 	--without-http_browser_module \
 	--without-http_grpc_module \
-	--without-http_mirror_module \
-	--without-http_scgi_module \
-	--without-http_uwsgi_module || cat objs/autoconf.err
+	--without-http_mirror_module || cat objs/autoconf.err
 make -j$(getconf _NPROCESSORS_ONLN) || exit 1
 make -j$(getconf _NPROCESSORS_ONLN) install || exit 1
 
