@@ -1,5 +1,6 @@
 # nginx-http3
 [![Build and publish container](https://github.com/justab0x/nginx-http3/actions/workflows/main.yml/badge.svg)](https://github.com/robvanoostenrijk/nginx-http3/actions/workflows/main.yml)
+
 Changed since fork: Re-enabled *cgi interfaces, changed user to www-data and different log outputs
 
 Static compiled [nginx](https://nginx.org/) with HTTP/3 support, compiled against different SSL libraries supporting QUIC.
