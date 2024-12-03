@@ -224,19 +224,21 @@ CC=/usr/bin/clang \
 CXX=/usr/bin/clang++ \
 ./configure \
 	--build="${SSL_COMMIT} ngx_brotli-$(git --git-dir=/usr/src/ngx_brotli/.git rev-parse --short HEAD) ngx-devel-kit-${MODULE_NGINX_DEVEL_KIT} headers-more-nginx-module-${MODULE_NGINX_HEADERS_MORE} echo-nginx-module-${MODULE_NGINX_ECHO} nginx-module-vts-${MODULE_NGINX_VTS} nginx-cookie-flag-module-${MODULE_NGINX_COOKIE_FLAG} set-misc-nginx-module-${MODULE_NGINX_MISC} njs-${MODULE_NGINX_NJS} ngx-http-substitutions-filter-module-latest" \
-	--prefix=/var/lib/nginx \
+	--prefix=/usr/share/nginx \
 	--sbin-path=/usr/sbin/nginx \
 	--modules-path=/usr/lib/nginx/modules \
 	--conf-path=/etc/nginx/nginx.conf \
 	--pid-path=/run/nginx/nginx.pid \
 	--lock-path=/run/nginx/nginx.lock \
-	--http-client-body-temp-path=/var/lib/nginx/tmp/client_body \
-	--http-proxy-temp-path=/var/lib/nginx/tmp/proxy \
-	--http-fastcgi-temp-path=/var/lib/nginx/tmp/fastcgi \
-	--http-uwsgi-temp-path=/var/lib/nginx/tmp/uwsgi \
-	--http-scgi-temp-path=/var/lib/nginx/tmp/scgi \
-	--user=nginx \
-	--group=nginx \
+	--http-client-body-temp-path=/var/lib/nginx/client_body \
+	--http-proxy-temp-path=/var/lib/nginx/proxy \
+	--http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+	--http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+	--http-scgi-temp-path=/var/lib/nginx/scgi \
+ 	--http-log-path=/var/log/nginx/access.log \
+  	--error-log-path=stderr \
+	--user=www-data \
+	--group=www-data \
 	--with-cc-opt="-I/usr/include/libxml2 -I/usr/src/aws-lc/install/include -O3 -static -Wno-sign-compare -Wno-conditional-uninitialized -Wno-unused-but-set-variable" \
 	--with-compat \
 	--with-file-aio \
