@@ -50,7 +50,8 @@ jobs:
       - name: Extract docker build artifacts
         shell: bash
         run: |
-          ./scripts/extract-artifacts.sh ghcr.io/${{ github.repository }} ${{ env.VERSION }} ${{ matrix.library }}
+          echo "REPO=${GITHUB_REPOSITORY@L}" >>${GITHUB_ENV}
+          ./scripts/extract-artifacts.sh ghcr.io/${REPO} ${{ env.VERSION }} ${{ matrix.library }}
       - name: Upload artifacts 
         uses: actions/upload-artifact@v4
         with:
