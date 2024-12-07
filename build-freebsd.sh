@@ -135,12 +135,16 @@ CXX=/usr/bin/clang++ \
 	--group=www \
 	--with-cc-opt="-I /usr/src/libxml2 -I /usr/src/aws-lc/install/include -I /usr/local/include" \
 	--with-ld-opt="-L /usr/src/aws-lc/install/lib -L /usr/src/libxml2 -L /usr/local/lib" \
+	--with-compat \
+	--with-file-aio \
 	--with-http_addition_module \
 	--with-http_auth_request_module \
 	--with-http_dav_module \
 	--with-http_degradation_module \
+ 	--with-http_flv_module \
 	--with-http_gunzip_module \
 	--with-http_gzip_static_module \
+ 	--with-http_mp4_module \
 	--with-http_random_index_module \
 	--with-http_realip_module \
 	--with-http_secure_link_module \
