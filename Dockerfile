@@ -236,7 +236,7 @@ CXX=/usr/bin/clang++ \
 	--http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
 	--http-scgi-temp-path=/var/lib/nginx/scgi \
  	--http-log-path=/var/log/nginx/access.log \
-  	--error-log-path=stderr \
+  	--error-log-path=/var/log/nginx/error.log \
 	--user=www-data \
 	--group=www-data \
 	--with-cc-opt="-I/usr/include/libxml2 -I/usr/src/aws-lc/install/include -O3 -static -Wno-sign-compare -Wno-conditional-uninitialized -Wno-unused-but-set-variable" \
@@ -246,8 +246,10 @@ CXX=/usr/bin/clang++ \
 	--with-http_auth_request_module \
 	--with-http_dav_module \
 	--with-http_degradation_module \
+ 	--with-http_flv_module \
 	--with-http_gunzip_module \
 	--with-http_gzip_static_module \
+ 	--with-http_mp4_module \
 	--with-http_random_index_module \
 	--with-http_realip_module \
 	--with-http_secure_link_module \
