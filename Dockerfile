@@ -262,6 +262,7 @@ CXX=/usr/bin/clang++ \
 	--with-http_v3_module \
 	--with-http_xslt_module \
 	--with-ld-opt="-L/usr/src/aws-lc/install/lib -w -s -static -lexslt -lxslt -lxml2 -lz -llzma" \
+ 	--with-openssl-opt=enable-ktls \
 	--with-pcre-jit \
 	--with-pcre-opt="-O3" \
 	--with-poll_module \
