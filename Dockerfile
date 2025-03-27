@@ -4,23 +4,23 @@
 ##################################################
 FROM alpine:latest AS builder
 
-ARG	AWS_LC_TAG=v1.40.0 \
+ARG	AWS_LC_TAG=v1.48.5 \
 	LIBRESSL_TAG=v3.9.2 \
-	OPENSSL_TAG=openssl-3.4.0 \
+	OPENSSL_TAG=openssl-3.4.1 \
 	MODULE_NGINX_COOKIE_FLAG=v1.1.0 \
-	MODULE_NGINX_DEVEL_KIT=v0.3.3 \
+	MODULE_NGINX_DEVEL_KIT=v0.3.4 \
 	MODULE_NGINX_ECHO=v0.63 \
-	MODULE_NGINX_HEADERS_MORE=v0.37 \
+	MODULE_NGINX_HEADERS_MORE=v0.38 \
 	MODULE_NGINX_MISC=v0.33 \
-	MODULE_NGINX_NJS=0.8.7 \
-	MODULE_NGINX_VTS=v0.2.2 \
-	NGINX=1.27.3
+	MODULE_NGINX_NJS=0.8.9 \
+	MODULE_NGINX_VTS=v0.2.4 \
+	MODULE_NGINX_ZSTD=0.1.1 \
+	NGINX=1.27.4
 
 ARG SSL_LIBRARY=openssl
 
 COPY --link ["patches/nginx_dynamic_tls_records.patch", "/usr/src/nginx_dynamic_tls_records.patch"]
 COPY --link ["patches/use_openssl_md5_sha1.patch", "/usr/src/use_openssl_md5_sha1.patch"]
-COPY --link ["patches/aws-lc-nginx.patch", "/usr/src/aws-lc-nginx.patch"]
 COPY --link ["scratchfs", "/scratchfs"]
 
 RUN <<EOF
@@ -51,6 +51,7 @@ apk add --no-cache --virtual .build-deps \
 	patch \
 	perl \
 	pcre2-dev \
+	pcre2-static \
 	samurai \
 	xz-static \
 	zlib-static
@@ -133,6 +134,11 @@ curl --silent --location https://github.com/vozlt/nginx-module-vts/archive/refs/
 curl --silent --location https://github.com/yaoweibin/ngx_http_substitutions_filter_module/tarball/master | tar xz -C /usr/src --one-top-level=ngx_http_substitutions_filter_module --strip-components=1 || exit 1
 
 #
+# Module: zstd-nginx-module
+#
+curl --silent --location https://github.com/tokers/zstd-nginx-module/archive/refs/tags/${MODULE_NGINX_ZSTD}.tar.gz | tar xz -C /usr/src --one-top-level=zstd-nginx-module --strip-components=1 || exit 1
+
+#
 # Module: njs
 #
 curl --silent --location https://github.com/nginx/njs/archive/refs/tags/${MODULE_NGINX_NJS}.tar.gz | tar xz -C /usr/src --one-top-level=njs --strip-components=1 || exit 1
@@ -141,7 +147,6 @@ curl --silent --location https://github.com/nginx/njs/archive/refs/tags/${MODULE
 # nginx
 #
 curl --silent --location https://nginx.org/download/nginx-${NGINX}.tar.gz | tar xz -C /usr/src --one-top-level=nginx --strip-components=1 || exit 1
-#curl --silent --location -o /usr/src/aws-lc-nginx.patch https://raw.githubusercontent.com/aws/aws-lc/main/tests/ci/integration/nginx_patch/aws-lc-nginx.patch || exit 1
 
 #
 # brotli cargo compile settings
@@ -223,7 +228,7 @@ patch -p1 < /usr/src/aws-lc-nginx.patch || exit 1
 CC=/usr/bin/clang \
 CXX=/usr/bin/clang++ \
 ./configure \
-	--build="${SSL_COMMIT} ngx_brotli-$(git --git-dir=/usr/src/ngx_brotli/.git rev-parse --short HEAD) ngx-devel-kit-${MODULE_NGINX_DEVEL_KIT} headers-more-nginx-module-${MODULE_NGINX_HEADERS_MORE} echo-nginx-module-${MODULE_NGINX_ECHO} nginx-module-vts-${MODULE_NGINX_VTS} nginx-cookie-flag-module-${MODULE_NGINX_COOKIE_FLAG} set-misc-nginx-module-${MODULE_NGINX_MISC} njs-${MODULE_NGINX_NJS} ngx-http-substitutions-filter-module-latest" \
+	--build="${SSL_COMMIT} ngx_brotli-$(git --git-dir=/usr/src/ngx_brotli/.git rev-parse --short HEAD) ngx-devel-kit-${MODULE_NGINX_DEVEL_KIT} headers-more-nginx-module-${MODULE_NGINX_HEADERS_MORE} echo-nginx-module-${MODULE_NGINX_ECHO} nginx-module-vts-${MODULE_NGINX_VTS} nginx-cookie-flag-module-${MODULE_NGINX_COOKIE_FLAG} set-misc-nginx-module-${MODULE_NGINX_MISC} njs-${MODULE_NGINX_NJS} ngx-http-substitutions-filter-module-latest zstd-nginx-module-${MODULE_NGINX_ZSTD}" \
 	--prefix=/usr/share/nginx \
 	--sbin-path=/usr/sbin/nginx \
 	--modules-path=/usr/lib/nginx/modules \
@@ -278,6 +283,7 @@ CXX=/usr/bin/clang++ \
 	--add-module=/usr/src/nginx-module-vts \
 	--add-module=/usr/src/ngx_brotli \
 	--add-module=/usr/src/ngx_http_substitutions_filter_module \
+	--add-module=/usr/src/zstd-nginx-module \
 	--add-module=/usr/src/njs/nginx \
 	--add-module=/usr/src/set-misc-nginx-module \
 	--without-http_browser_module \
