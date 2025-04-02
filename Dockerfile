@@ -232,7 +232,7 @@ CC=/usr/bin/clang \
 CXX=/usr/bin/clang++ \
 ./configure \
 	--build="${SSL_COMMIT} ngx_brotli-$(git --git-dir=/usr/src/ngx_brotli/.git rev-parse --short HEAD) ngx-devel-kit-${MODULE_NGINX_DEVEL_KIT} headers-more-nginx-module-${MODULE_NGINX_HEADERS_MORE} echo-nginx-module-${MODULE_NGINX_ECHO} nginx-module-vts-${MODULE_NGINX_VTS} nginx-cookie-flag-module-${MODULE_NGINX_COOKIE_FLAG} set-misc-nginx-module-${MODULE_NGINX_MISC} ngx-http-substitutions-filter-module-latest zstd-nginx-module-${MODULE_NGINX_ZSTD} njs-${MODULE_NGINX_NJS}" \
-	--prefix=/var/lib/nginx \
+	--prefix=/usr/share/nginx \
 	--sbin-path=/usr/sbin/nginx \
 	--modules-path=/usr/lib/nginx/modules \
 	--conf-path=/etc/nginx/nginx.conf \
@@ -245,6 +245,7 @@ CXX=/usr/bin/clang++ \
 	--http-scgi-temp-path=/var/lib/nginx/scgi \
 	--user=www-data \
 	--group=www-data \
+	--error-log-path=stderr \
 	--with-cc-opt="-I/usr/include/libxml2 -I/usr/src/aws-lc/install/include -O3 -static -Wno-sign-compare -Wno-conditional-uninitialized -Wno-unused-but-set-variable" \
 	--with-compat \
 	--with-file-aio \
@@ -286,9 +287,7 @@ CXX=/usr/bin/clang++ \
 	--add-module=/usr/src/set-misc-nginx-module \
 	--without-http_browser_module \
 	--without-http_grpc_module \
-	--without-http_mirror_module \
-	--without-http_scgi_module \
-	--without-http_uwsgi_module || cat objs/autoconf.err
+	--without-http_mirror_module || cat objs/autoconf.err
 make -j$(getconf _NPROCESSORS_ONLN) || exit 1
 make -j$(getconf _NPROCESSORS_ONLN) install || exit 1
 
