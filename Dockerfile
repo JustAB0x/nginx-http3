@@ -238,13 +238,13 @@ CXX=/usr/bin/clang++ \
 	--conf-path=/etc/nginx/nginx.conf \
 	--pid-path=/run/nginx/nginx.pid \
 	--lock-path=/run/nginx/nginx.lock \
-	--http-client-body-temp-path=/var/lib/nginx/tmp/client_body \
-	--http-proxy-temp-path=/var/lib/nginx/tmp/proxy \
-	--http-fastcgi-temp-path=/var/lib/nginx/tmp/fastcgi \
-	--http-uwsgi-temp-path=/var/lib/nginx/tmp/uwsgi \
-	--http-scgi-temp-path=/var/lib/nginx/tmp/scgi \
-	--user=nginx \
-	--group=nginx \
+	--http-client-body-temp-path=/var/lib/nginx/client_body \
+	--http-proxy-temp-path=/var/lib/nginx/proxy \
+	--http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+	--http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+	--http-scgi-temp-path=/var/lib/nginx/scgi \
+	--user=www-data \
+	--group=www-data \
 	--with-cc-opt="-I/usr/include/libxml2 -I/usr/src/aws-lc/install/include -O3 -static -Wno-sign-compare -Wno-conditional-uninitialized -Wno-unused-but-set-variable" \
 	--with-compat \
 	--with-file-aio \
